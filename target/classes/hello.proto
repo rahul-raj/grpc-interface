@@ -1,0 +1,48 @@
+// this is the proto buffer version (proto3 is the latest)
+syntax = "proto3";
+// mentioning the parent package name under which all files to be created.
+package grpcdemo;
+// mentioning the complete package name with full path
+// (we can also use package command above)
+option java_package = "com.grpc.demo";
+// if we don't mention this,
+// then one single java class will be created with all required classes nested.
+option java_multiple_files = true;
+// request format for unary example
+message HelloRequest {
+// these are the field numbers used to identify fields in the protobuf binary data
+  string firstName = 1;
+  string lastName = 2;
+}
+// response format for unary example
+message HelloResponse {
+  string greeting = 1;
+}
+// request format for client streaming example
+message SumRequest {
+  int32 number = 1;
+}
+// response format for client streaming example
+message SumResponse{
+  int32 sum = 1;
+}
+// request format for bidirectional streaming example
+message DuplexRequest{
+  string itemType = 1;
+}
+// response format for bidirectional streaming example
+message DuplexResponse{
+  string itemName = 1;
+  int32 itemPrice = 2;
+  bool isAvailable = 3;
+}
+//unary request
+service HelloService {
+  rpc hello(HelloRequest) returns (HelloResponse);
+//server streaming
+rpc helloServerStreaming(HelloRequest) returns (stream HelloResponse);
+// client streaming
+rpc helloClientStreaming(stream SumRequest) returns (SumResponse);
+// bidirectional streaming
+rpc helloDuplex(stream DuplexRequest) returns (stream DuplexResponse);
+}
